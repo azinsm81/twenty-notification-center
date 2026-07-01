@@ -1,4 +1,26 @@
-export const NOTIFICATIONS = [
+export type Notification = {
+  id: string;
+  urgent: boolean;
+  read: boolean;
+  title: string;
+  description: string;
+  timestamp: string;
+  dateGroup: string;
+  customer: string;
+  company: string;
+  dealStage: string;
+  dealValue: string | null;
+  emailFrom?: string;
+  emailSubject?: string;
+  snippet?: string;
+  aiSummary?: string;
+  aiDraft?: string;
+  aiDraftWrongAttachment?: string;
+  aiDraftCorrectAttachment?: string;
+  actions: string[];
+};
+
+export const NOTIFICATIONS: Notification[] = [
   {
     id: "A",
     urgent: true,
@@ -51,6 +73,4 @@ export const NOTIFICATIONS = [
     dealValue: null,
     actions: [],
   },
-] as const;
-
-export type Notification = (typeof NOTIFICATIONS)[number];
+];

@@ -2,9 +2,9 @@
 
 import { useState, useEffect, useRef } from "react";
 import { X, Sparkles, Send, AlertTriangle, RefreshCw, ArrowLeft } from "lucide-react";
-import type { NOTIFICATIONS } from "@/lib/data";
+import type { Notification } from "@/lib/data";
 
-type NotifA = (typeof NOTIFICATIONS)[0];
+type NotifA = Notification;
 
 type DrawerView = "summary" | "compose";
 type ComposeState = "idle" | "generating" | "draft-ready";
@@ -19,7 +19,7 @@ export function DetailDrawer({ notification, onClose, onSent }: Props) {
   const [view, setView] = useState<DrawerView>("summary");
   const [composeState, setComposeState] = useState<ComposeState>("idle");
   const [draftText, setDraftText] = useState("");
-  const [subject, setSubject] = useState<string>(notification.emailSubject);
+  const [subject, setSubject] = useState(notification.emailSubject ?? "");
   const [sendError, setSendError] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -37,7 +37,7 @@ export function DetailDrawer({ notification, onClose, onSent }: Props) {
   function handleGenerate() {
     setComposeState("generating");
     setTimeout(() => {
-      setDraftText(notification.aiDraft);
+      setDraftText(notification.aiDraft ?? "");
       setComposeState("draft-ready");
       setTimeout(() => textareaRef.current?.focus(), 50);
     }, 900);
