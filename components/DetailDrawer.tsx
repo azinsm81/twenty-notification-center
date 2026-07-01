@@ -19,7 +19,7 @@ export function DetailDrawer({ notification, onClose, onSent }: Props) {
   const [view, setView] = useState<DrawerView>("summary");
   const [composeState, setComposeState] = useState<ComposeState>("idle");
   const [draftText, setDraftText] = useState("");
-  const [subject, setSubject] = useState(notification.emailSubject);
+  const [subject, setSubject] = useState<string>(notification.emailSubject);
   const [sendError, setSendError] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
