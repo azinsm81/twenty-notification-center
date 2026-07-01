@@ -121,7 +121,7 @@ export function DetailDrawer({ notification, onClose, onSent }: Props) {
               composeState={composeState}
               draftText={draftText}
               subject={subject}
-              setSubject={setSubject}
+              setSubject={(v) => setSubject(v)}
               setDraftText={(v) => { setDraftText(v); if (v.trim()) setSendError(""); }}
               textareaRef={textareaRef}
               onGenerate={handleGenerate}
