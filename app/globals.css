@@ -1,26 +1,68 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Typography */
+  --font-sans: "Inter", system-ui, sans-serif;
+
+  /* Twenty text tokens */
+  --color-text-primary: #333333;
+  --color-text-secondary: #666666;
+  --color-text-tertiary: #999999;
+  --color-text-light: #B3B3B3;
+  --color-text-extra-light: #CCCCCC;
+  --color-text-inverted: #FFFFFF;
+  --color-text-danger: #E5484D;
+  --color-text-brand: #3E63DD;
+
+  /* Twenty background tokens */
+  --color-bg-primary: #FFFFFF;
+  --color-bg-secondary: #FCFCFC;
+  --color-bg-notification-hover: #F8F9FF;
+  --color-bg-tertiary: #F1F1F1;
+  --color-bg-quarternary: #EBEBEB;
+  --color-bg-inverted: #333333;
+  --color-bg-danger: #FFEFEF;
+  --color-bg-brand: #F0F4FF;
+  --color-bg-warning: #FFF4D5;
+
+  /* Twenty border tokens */
+  --color-border-light: #F1F1F1;
+  --color-border-medium: #EBEBEB;
+  --color-border-stronger: #D6D6D6;
+  --color-border-danger: #FFE5E5;
+  --color-border-brand: #E6EDFE;
+
+  /* Accent (Indigo default) */
+  --color-accent-9: #3E63DD;
+  --color-accent-10: #3A5CCC;
+  --color-accent-11: #3451B2;
+  --color-accent-3: #F0F4FF;
+
+  /* Semantic danger */
+  --color-red-3: #FFEFEF;
+  --color-red-9: #E5484D;
+  --color-red-10: #DC3D43;
+
+  /* Amber */
+  --color-amber-3: #FFF4D5;
+  --color-amber-9: #FFB224;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.10);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
 }
