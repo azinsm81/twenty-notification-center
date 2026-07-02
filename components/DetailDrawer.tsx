@@ -224,7 +224,7 @@ function ComposeBody({
           <span className="text-[13px] text-(--color-text-secondary)">{notification.emailFrom}</span>
         </div>
         <div className="flex items-center gap-2 h-8 px-3 rounded-md border border-(--color-border-medium) bg-(--color-bg-primary) focus-within:border-(--color-accent-9) transition-colors">
-          <span className="text-[11px] font-medium text-(--color-text-tertiary) w-8 flex-shrink-0">Re</span>
+          <span className="text-[11px] font-medium text-(--color-text-tertiary) w-12 flex-shrink-0">Subject</span>
           <input
             type="text"
             value={subject}

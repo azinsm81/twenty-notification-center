@@ -163,7 +163,7 @@ export default function Home() {
                           )}
 
                           {read && (
-                            <span className="inline-block mt-2 text-[12px] text-(--color-text-tertiary)">Sent · {n.timestamp}</span>
+                            <span className="inline-block mt-2 text-[12px] text-(--color-text-tertiary)">{n.urgent ? `Sent · ${n.timestamp}` : n.timestamp}</span>
                           )}
                         </div>
                       </div>
@@ -209,7 +209,7 @@ export default function Home() {
 
           {/* Two-line copy */}
           <div>
-            <p className="text-[13px] font-semibold leading-snug">Reply sent · Acme Corp renewal</p>
+            <p className="text-[13px] font-semibold leading-snug">Reply sent to Sarah Chen</p>
             <p className="text-[12px] opacity-60 mt-0.5 leading-snug">Sarah has what she needs for Friday&apos;s board meeting.</p>
           </div>
         </div>
