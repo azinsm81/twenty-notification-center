@@ -41,7 +41,7 @@ export default function Home() {
       const t = setTimeout(() => {
         setToastVisible(false);
         setTimeout(() => setShowToast(false), 150);
-      }, 3000);
+      }, 4000);
       return () => clearTimeout(t);
     }
   }, [showToast]);
@@ -187,19 +187,31 @@ export default function Home() {
       {/* #2 Toast: slide up on enter, fade out on exit */}
       {showToast && (
         <div
-          className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] flex items-center gap-3 px-4 py-2.5 rounded-md bg-(--color-bg-inverted) text-(--color-text-inverted) text-[13px] transition-all duration-250 ease-out ${
+          className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] flex items-center gap-3.5 px-5 py-3.5 rounded-lg bg-(--color-bg-inverted) text-(--color-text-inverted) transition-all duration-300 ease-out ${
             toastVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
           }`}
-          style={{ boxShadow: "var(--shadow-md)" }}
+          style={{ boxShadow: "0 8px 24px rgba(0,0,0,0.18)" }}
         >
-          <span style={{ color: "#4ade80" }}>✓</span>
-          <span>Email sent to Sarah Chen</span>
-          <button
-            onClick={() => { setToastVisible(false); setTimeout(() => setShowToast(false), 150); }}
-            className="ml-2 text-[12px] font-medium underline underline-offset-2 opacity-70 hover:opacity-100 transition-opacity"
-          >
-            Undo
-          </button>
+          {/* Animated checkmark */}
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="flex-shrink-0">
+            <circle cx="10" cy="10" r="9" stroke="#4ade80" strokeWidth="1.5" opacity="0.35" />
+            <path
+              d="M6 10.5L9 13.5L14 7.5"
+              stroke="#4ade80"
+              strokeWidth="1.75"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeDasharray="20"
+              className="animate-draw-check"
+              style={{ strokeDashoffset: 20, opacity: 0 }}
+            />
+          </svg>
+
+          {/* Two-line copy */}
+          <div>
+            <p className="text-[13px] font-semibold leading-snug">Reply sent · Acme Corp renewal</p>
+            <p className="text-[12px] opacity-60 mt-0.5 leading-snug">Sarah has what she needs for Friday&apos;s board meeting.</p>
+          </div>
         </div>
       )}
     </div>

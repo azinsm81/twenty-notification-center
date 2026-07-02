@@ -20,7 +20,6 @@ export function DetailDrawer({ notification, onClose, onSent }: Props) {
   const [composeState, setComposeState] = useState<ComposeState>("idle");
   const [draftText, setDraftText] = useState("");
   const [subject, setSubject] = useState(notification.emailSubject ?? "");
-  const [sendError, setSendError] = useState("");
   const [errorKey, setErrorKey] = useState(0);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -47,11 +46,9 @@ export function DetailDrawer({ notification, onClose, onSent }: Props) {
 
   function handleSend() {
     if (!draftText.trim()) {
-      setSendError("Your message is empty. Write a reply before sending.");
-      setErrorKey((k) => k + 1); // force error banner to re-animate on repeat taps
+      setErrorKey((k) => k + 1);
       return;
     }
-    setSendError("");
     onSent();
   }
 
@@ -130,7 +127,7 @@ export function DetailDrawer({ notification, onClose, onSent }: Props) {
                 draftText={draftText}
                 subject={subject}
                 setSubject={(v) => setSubject(v)}
-                setDraftText={(v) => { setDraftText(v); if (v.trim()) setSendError(""); }}
+                setDraftText={(v) => setDraftText(v)}
                 textareaRef={textareaRef}
                 onGenerate={handleGenerate}
                 errorKey={errorKey}
@@ -145,7 +142,7 @@ export function DetailDrawer({ notification, onClose, onSent }: Props) {
             /* #5 send button press feel */
             <button
               onClick={handleReply}
-              className="w-full h-8 rounded-md bg-(--color-accent-9) hover:bg-(--color-accent-10) active:scale-[0.97] text-white text-[13px] font-medium transition-all duration-100"
+              className="w-full h-10 rounded-md bg-(--color-accent-9) hover:bg-(--color-accent-10) active:scale-[0.97] text-white text-[14px] font-medium transition-all duration-100"
             >
               Reply
             </button>
@@ -159,23 +156,13 @@ export function DetailDrawer({ notification, onClose, onSent }: Props) {
           )}
 
           {view === "compose" && composeState !== "generating" && (
-            <div className="space-y-2">
-              {sendError && (
-                /* #6 error banner slides down */
-                <div key={errorKey} className="animate-slide-down flex items-center gap-2 px-3 py-2 rounded-md bg-(--color-bg-danger) border border-(--color-border-danger)">
-                  <AlertTriangle size={13} className="text-(--color-text-danger) flex-shrink-0" strokeWidth={1.5} />
-                  <span className="text-[12px] text-(--color-text-danger)">{sendError}</span>
-                </div>
-              )}
-              {/* #5 send button press feel */}
-              <button
-                onClick={handleSend}
-                className="w-full h-8 rounded-md bg-(--color-accent-9) hover:bg-(--color-accent-10) active:scale-[0.97] text-white text-[13px] font-medium transition-all duration-100 flex items-center justify-center gap-2"
-              >
-                <Send size={14} strokeWidth={1.5} />
-                Send
-              </button>
-            </div>
+            <button
+              onClick={handleSend}
+              className="w-full h-8 rounded-md bg-(--color-accent-9) hover:bg-(--color-accent-10) active:scale-[0.97] text-white text-[13px] font-medium transition-all duration-100 flex items-center justify-center gap-2"
+            >
+              <Send size={14} strokeWidth={1.5} />
+              Send
+            </button>
           )}
         </div>
       </div>
@@ -264,6 +251,13 @@ function ComposeBody({
               : "border-(--color-border-medium) focus:border-(--color-accent-9)"
           }`}
         />
+        {/* Error appears directly under the field */}
+        {errorKey > 0 && !draftText.trim() && (
+          <p key={errorKey} className="animate-slide-down mt-1.5 text-[12px] text-(--color-text-danger) flex items-center gap-1.5">
+            <AlertTriangle size={12} strokeWidth={1.5} className="flex-shrink-0" />
+            Your message is empty. Write a reply before sending.
+          </p>
+        )}
       </div>
 
       {/* Generate button */}
