@@ -212,10 +212,17 @@ function SummaryBody({ notification }: { notification: NotifA }) {
         {/* Collapsible body */}
         {summaryExpanded && (
           <div className="px-3 py-3 space-y-3 bg-(--color-bg-primary)">
-            <p className="text-[13px] text-(--color-text-primary) leading-relaxed">{notification.aiSummary}</p>
+            <ul className="space-y-1.5">
+              {(notification.aiSummaryPoints ?? []).map((point, i) => (
+                <li key={i} className="flex items-start gap-2 text-[13px] text-(--color-text-primary) leading-relaxed">
+                  <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-(--color-accent-9) flex-shrink-0" />
+                  {point}
+                </li>
+              ))}
+            </ul>
 
             {/* Source link */}
-            <div className="flex items-center gap-3 pt-1 border-t border-(--color-border-light)">
+            <div className="pt-1 border-t border-(--color-border-light)">
               <a
                 href="#"
                 onClick={(e) => e.preventDefault()}
@@ -223,14 +230,6 @@ function SummaryBody({ notification }: { notification: NotifA }) {
               >
                 <ExternalLink size={11} strokeWidth={1.5} />
                 Gmail thread · 3 emails
-              </a>
-              <a
-                href="#"
-                onClick={(e) => e.preventDefault()}
-                className="flex items-center gap-1.5 text-[12px] text-(--color-accent-9) hover:underline"
-              >
-                <ExternalLink size={11} strokeWidth={1.5} />
-                Acme Corp Renewal Q4.pdf
               </a>
             </div>
 

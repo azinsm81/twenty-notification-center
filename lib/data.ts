@@ -14,6 +14,7 @@ export type Notification = {
   emailSubject?: string;
   snippet?: string;
   aiSummary?: string;
+  aiSummaryPoints?: string[];
   aiDraft?: string;
   aiDraftWrongAttachment?: string;
   aiDraftCorrectAttachment?: string;
@@ -37,8 +38,12 @@ export const NOTIFICATIONS: Notification[] = [
     emailSubject: "Re: Acme Corp Renewal — Final Approval",
     snippet:
       "Hi, just following up on the renewal proposal — can you confirm the pricing before Friday? Our board meeting is that afternoon and I need final sign-off.",
-    aiSummary:
-      "Sarah is following up on the enterprise renewal proposal sent last week. She's requesting final approval on pricing before her board meeting on Friday. The deal is at $240K/yr — unchanged from the last quoted figure. Sentiment is positive; she's ready to sign pending your confirmation.",
+    aiSummaryPoints: [
+      "Following up on the renewal proposal sent last week",
+      "Needs pricing confirmed before Friday's board meeting",
+      "Deal at $240K/yr — unchanged from last quote",
+      "Sentiment positive; ready to sign on your confirmation",
+    ],
     aiDraft:
       "Hi Sarah,\n\nThank you for following up. I'm happy to confirm the pricing at $240,000/year as discussed.\n\nI've looped in our legal team to send over the final contract today — you should receive it within the hour. Looking forward to getting this across the line before your board meeting on Friday.\n\nBest,\nMartha",
     aiDraftWrongAttachment: "Q3 2024 Pricing Deck.pdf",
