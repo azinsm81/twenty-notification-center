@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__343de45a-88df-43be-82e3-73ac6876ba4e__get_metadata",
+      "mcp__343de45a-88df-43be-82e3-73ac6876ba4e__use_figma",
+      "Bash(python3 -c ' *)",
+      "Bash(cp \"/Users/azinshadmand/Downloads/twenty-design-system.md\" \"/Users/azinshadmand/claude_project/Twenty Notification Center/design.md\")"
+    ]
+  }
+}
