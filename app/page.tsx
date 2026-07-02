@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Sidebar } from "@/components/Sidebar";
-import { TopBar } from "@/components/TopBar";
+import { TopBar, type SortMode } from "@/components/TopBar";
 import { DetailDrawer } from "@/components/DetailDrawer";
 import { NOTIFICATIONS } from "@/lib/data";
 import { ArrowUpRight } from "lucide-react";
@@ -25,6 +25,7 @@ export default function Home() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [notifARead, setNotifARead] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [sortMode, setSortMode] = useState<SortMode>("chronological");
 
   function handleSent() {
     setDrawerOpen(false);
@@ -41,17 +42,30 @@ export default function Home() {
 
   const isRead = (id: string) => (id === "A" && notifARead) || id === "B" || id === "C";
 
+  const sortedNotifications = sortMode === "importance"
+    ? [...NOTIFICATIONS].sort((a, b) => (b.urgent ? 1 : 0) - (a.urgent ? 1 : 0))
+    : [...NOTIFICATIONS];
+
+  const DATE_GROUPS_SORTED = sortMode === "importance"
+    ? ["Urgent", "Other"]
+    : DATE_GROUPS;
+
+  function getGroup(n: typeof NOTIFICATIONS[number]) {
+    if (sortMode === "importance") return n.urgent ? "Urgent" : "Other";
+    return n.dateGroup;
+  }
+
   return (
     <div className="h-full flex overflow-hidden">
       <Sidebar unreadCount={notifARead ? 0 : 1} />
 
       <div className="flex-1 flex flex-col overflow-hidden min-w-0 relative">
-        <TopBar />
+        <TopBar sortMode={sortMode} onSortChange={setSortMode} />
 
         <main className="flex-1 overflow-y-auto bg-(--color-bg-primary)">
           <div>
-            {DATE_GROUPS.map((group) => {
-              const rows = NOTIFICATIONS.filter((n) => n.dateGroup === group);
+            {DATE_GROUPS_SORTED.map((group) => {
+              const rows = sortedNotifications.filter((n) => getGroup(n) === group);
               if (!rows.length) return null;
 
               return (
