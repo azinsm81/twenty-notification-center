@@ -199,7 +199,7 @@ function SummaryBody({ notification }: { notification: NotifA }) {
           className="w-full flex items-center justify-between gap-2 px-3 py-2.5 bg-(--color-bg-secondary) hover:bg-(--color-bg-tertiary) transition-colors text-left"
         >
           <div className="flex items-center gap-2 min-w-0">
-            <Sparkles size={13} className="text-(--color-accent-9) flex-shrink-0" strokeWidth={1.5} />
+            <Sparkles size={13} className="text-(--color-amber-9) flex-shrink-0" strokeWidth={1.5} />
             <span className="text-[12px] font-medium text-(--color-text-secondary)">AI summary</span>
             <span className="text-[11px] text-(--color-text-tertiary)">· Based on 3 emails from {notification.customer}</span>
           </div>
@@ -215,7 +215,7 @@ function SummaryBody({ notification }: { notification: NotifA }) {
             <ul className="space-y-1.5">
               {(notification.aiSummaryPoints ?? []).map((point, i) => (
                 <li key={i} className="flex items-start gap-2 text-[13px] text-(--color-text-primary) leading-relaxed">
-                  <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-(--color-accent-9) flex-shrink-0" />
+                  <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-(--color-text-tertiary) flex-shrink-0" />
                   {point}
                 </li>
               ))}
@@ -232,14 +232,14 @@ function SummaryBody({ notification }: { notification: NotifA }) {
                 Gmail thread · 3 emails
               </a>
             </div>
-
-            {/* AI disclaimer */}
-            <p className="text-[11px] text-(--color-text-tertiary) leading-relaxed">
-              AI-generated — double-check before acting.
-            </p>
           </div>
         )}
       </div>
+
+      {/* AI disclaimer — outside the card */}
+      <p className="text-[11px] text-(--color-text-tertiary) leading-relaxed -mt-2">
+        AI-generated — double-check before acting.
+      </p>
     </>
   );
 }
