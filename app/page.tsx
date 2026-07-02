@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Sidebar } from "@/components/Sidebar";
 import { TopBar, type SortMode } from "@/components/TopBar";
 import { DetailDrawer } from "@/components/DetailDrawer";
+import { Confetti } from "@/components/Confetti";
 import { NOTIFICATIONS } from "@/lib/data";
 import { ArrowUpRight } from "lucide-react";
 
@@ -183,6 +184,8 @@ export default function Home() {
           onSent={handleSent}
         />
       )}
+
+      <Confetti active={showToast} />
 
       {/* #2 Toast: slide up on enter, fade out on exit */}
       {showToast && (
