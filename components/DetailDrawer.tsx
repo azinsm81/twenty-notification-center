@@ -158,7 +158,7 @@ export function DetailDrawer({ notification, onClose, onSent }: Props) {
           {view === "compose" && composeState !== "generating" && (
             <button
               onClick={handleSend}
-              className="w-full h-8 rounded-md bg-(--color-accent-9) hover:bg-(--color-accent-10) active:scale-[0.97] text-white text-[13px] font-medium transition-all duration-100 flex items-center justify-center gap-2"
+              className="w-full h-10 rounded-md bg-(--color-accent-9) hover:bg-(--color-accent-10) active:scale-[0.97] text-white text-[14px] font-medium transition-all duration-100 flex items-center justify-center gap-2"
             >
               <Send size={14} strokeWidth={1.5} />
               Send
@@ -264,7 +264,7 @@ function ComposeBody({
       <button
         onClick={onGenerate}
         disabled={composeState === "generating"}
-        className="w-full h-8 rounded-md border border-(--color-border-medium) bg-(--color-bg-primary) hover:bg-(--color-bg-tertiary) active:scale-[0.97] text-[13px] text-(--color-text-secondary) font-medium transition-all duration-100 flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
+        className="w-full h-10 rounded-md border border-(--color-border-medium) bg-(--color-bg-primary) hover:bg-(--color-bg-tertiary) active:scale-[0.97] text-[14px] text-(--color-text-secondary) font-medium transition-all duration-100 flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
       >
         <Sparkles size={14} strokeWidth={1.5} className="text-(--color-accent-9)" />
         Generate with AI

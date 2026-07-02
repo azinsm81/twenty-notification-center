@@ -41,7 +41,7 @@ export default function Home() {
       const t = setTimeout(() => {
         setToastVisible(false);
         setTimeout(() => setShowToast(false), 150);
-      }, 4000);
+      }, 6000);
       return () => clearTimeout(t);
     }
   }, [showToast]);
@@ -187,7 +187,7 @@ export default function Home() {
       {/* #2 Toast: slide up on enter, fade out on exit */}
       {showToast && (
         <div
-          className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] flex items-center gap-3.5 px-5 py-3.5 rounded-lg bg-(--color-bg-inverted) text-(--color-text-inverted) transition-all duration-300 ease-out ${
+          className={`fixed bottom-16 left-1/2 -translate-x-1/2 z-[60] flex items-center gap-3.5 px-5 py-3.5 rounded-lg bg-(--color-bg-inverted) text-(--color-text-inverted) transition-all duration-300 ease-out ${
             toastVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
           }`}
           style={{ boxShadow: "0 8px 24px rgba(0,0,0,0.18)" }}
