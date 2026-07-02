@@ -25,6 +25,7 @@ export default function Home() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [notifARead, setNotifARead] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [toastVisible, setToastVisible] = useState(false);
   const [sortMode, setSortMode] = useState<SortMode>("chronological");
 
   function handleSent() {
@@ -33,9 +34,14 @@ export default function Home() {
     setShowToast(true);
   }
 
+  // #2 Toast: mount first, then trigger visible state for slide-up; fade out before unmount
   useEffect(() => {
     if (showToast) {
-      const t = setTimeout(() => setShowToast(false), 3000);
+      requestAnimationFrame(() => setToastVisible(true));
+      const t = setTimeout(() => {
+        setToastVisible(false);
+        setTimeout(() => setShowToast(false), 150);
+      }, 3000);
       return () => clearTimeout(t);
     }
   }, [showToast]);
@@ -178,15 +184,18 @@ export default function Home() {
         />
       )}
 
+      {/* #2 Toast: slide up on enter, fade out on exit */}
       {showToast && (
         <div
-          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] flex items-center gap-3 px-4 py-2.5 rounded-md bg-(--color-bg-inverted) text-(--color-text-inverted) text-[13px]"
+          className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] flex items-center gap-3 px-4 py-2.5 rounded-md bg-(--color-bg-inverted) text-(--color-text-inverted) text-[13px] transition-all duration-250 ease-out ${
+            toastVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
+          }`}
           style={{ boxShadow: "var(--shadow-md)" }}
         >
           <span style={{ color: "#4ade80" }}>✓</span>
           <span>Email sent to Sarah Chen</span>
           <button
-            onClick={() => setShowToast(false)}
+            onClick={() => { setToastVisible(false); setTimeout(() => setShowToast(false), 150); }}
             className="ml-2 text-[12px] font-medium underline underline-offset-2 opacity-70 hover:opacity-100 transition-opacity"
           >
             Undo

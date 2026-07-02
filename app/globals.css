@@ -52,6 +52,24 @@
   --shadow-md: 0 4px 12px rgba(0,0,0,0.10);
 }
 
+@keyframes fade-slide-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-slide-up {
+  animation: fade-slide-up 200ms ease-out forwards;
+}
+
+.animate-slide-down {
+  animation: slide-down 180ms ease-out forwards;
+}
+
 * {
   box-sizing: border-box;
 }

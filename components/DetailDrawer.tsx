@@ -21,8 +21,10 @@ export function DetailDrawer({ notification, onClose, onSent }: Props) {
   const [draftText, setDraftText] = useState("");
   const [subject, setSubject] = useState(notification.emailSubject ?? "");
   const [sendError, setSendError] = useState("");
+  const [errorKey, setErrorKey] = useState(0);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  // #4 Drawer slide-in
   const [visible, setVisible] = useState(false);
   useEffect(() => {
     requestAnimationFrame(() => setVisible(true));
@@ -46,6 +48,7 @@ export function DetailDrawer({ notification, onClose, onSent }: Props) {
   function handleSend() {
     if (!draftText.trim()) {
       setSendError("Your message is empty. Write a reply before sending.");
+      setErrorKey((k) => k + 1); // force error banner to re-animate on repeat taps
       return;
     }
     setSendError("");
@@ -74,7 +77,7 @@ export function DetailDrawer({ notification, onClose, onSent }: Props) {
           boxShadow: "var(--shadow-md)",
         }}
       >
-        {/* Header */}
+        {/* Header — arrives with the drawer, no extra delay */}
         <div className="flex-shrink-0 px-5 pt-5 pb-4 border-b border-(--color-border-medium)">
           {view === "compose" && (
             <button
@@ -111,30 +114,38 @@ export function DetailDrawer({ notification, onClose, onSent }: Props) {
           </div>
         </div>
 
-        {/* Body */}
-        <div className="flex-1 overflow-y-auto px-5 py-4 space-y-5">
-          {view === "summary" ? (
-            <SummaryBody notification={notification} />
-          ) : (
-            <ComposeBody
-              notification={notification}
-              composeState={composeState}
-              draftText={draftText}
-              subject={subject}
-              setSubject={(v) => setSubject(v)}
-              setDraftText={(v) => { setDraftText(v); if (v.trim()) setSendError(""); }}
-              textareaRef={textareaRef}
-              onGenerate={handleGenerate}
-            />
-          )}
+        {/* Body — #4 stagger: fades in 80ms after header/drawer arrive */}
+        <div
+          className={`flex-1 overflow-y-auto px-5 py-4 space-y-5 transition-opacity duration-200 ${visible ? "opacity-100" : "opacity-0"}`}
+          style={{ transitionDelay: visible ? "80ms" : "0ms" }}
+        >
+          {/* #3 view crossfade: key forces remount + fade-slide-up on every view switch */}
+          <div key={view} className="animate-fade-slide-up space-y-5">
+            {view === "summary" ? (
+              <SummaryBody notification={notification} />
+            ) : (
+              <ComposeBody
+                notification={notification}
+                composeState={composeState}
+                draftText={draftText}
+                subject={subject}
+                setSubject={(v) => setSubject(v)}
+                setDraftText={(v) => { setDraftText(v); if (v.trim()) setSendError(""); }}
+                textareaRef={textareaRef}
+                onGenerate={handleGenerate}
+                errorKey={errorKey}
+              />
+            )}
+          </div>
         </div>
 
         {/* Footer */}
         <div className="flex-shrink-0 px-5 py-4 border-t border-(--color-border-medium)">
           {view === "summary" && (
+            /* #5 send button press feel */
             <button
               onClick={handleReply}
-              className="w-full h-8 rounded-md bg-(--color-accent-9) hover:bg-(--color-accent-10) text-white text-[13px] font-medium transition-colors"
+              className="w-full h-8 rounded-md bg-(--color-accent-9) hover:bg-(--color-accent-10) active:scale-[0.97] text-white text-[13px] font-medium transition-all duration-100"
             >
               Reply
             </button>
@@ -150,14 +161,16 @@ export function DetailDrawer({ notification, onClose, onSent }: Props) {
           {view === "compose" && composeState !== "generating" && (
             <div className="space-y-2">
               {sendError && (
-                <div className="flex items-center gap-2 px-3 py-2 rounded-md bg-(--color-bg-danger) border border-(--color-border-danger)">
+                /* #6 error banner slides down */
+                <div key={errorKey} className="animate-slide-down flex items-center gap-2 px-3 py-2 rounded-md bg-(--color-bg-danger) border border-(--color-border-danger)">
                   <AlertTriangle size={13} className="text-(--color-text-danger) flex-shrink-0" strokeWidth={1.5} />
                   <span className="text-[12px] text-(--color-text-danger)">{sendError}</span>
                 </div>
               )}
+              {/* #5 send button press feel */}
               <button
                 onClick={handleSend}
-                className="w-full h-8 rounded-md bg-(--color-accent-9) hover:bg-(--color-accent-10) text-white text-[13px] font-medium transition-colors flex items-center justify-center gap-2"
+                className="w-full h-8 rounded-md bg-(--color-accent-9) hover:bg-(--color-accent-10) active:scale-[0.97] text-white text-[13px] font-medium transition-all duration-100 flex items-center justify-center gap-2"
               >
                 <Send size={14} strokeWidth={1.5} />
                 Send
@@ -201,6 +214,7 @@ interface ComposeBodyProps {
   setDraftText: (v: string) => void;
   textareaRef: React.RefObject<HTMLTextAreaElement | null>;
   onGenerate: () => void;
+  errorKey: number;
 }
 
 function ComposeBody({
@@ -212,6 +226,7 @@ function ComposeBody({
   setDraftText,
   textareaRef,
   onGenerate,
+  errorKey,
 }: ComposeBodyProps) {
   return (
     <>
@@ -232,21 +247,30 @@ function ComposeBody({
         </div>
       </div>
 
-      {/* Textarea */}
-      <textarea
-        ref={textareaRef}
-        value={draftText}
-        onChange={(e) => setDraftText(e.target.value)}
-        placeholder="Write your reply…"
-        disabled={composeState === "generating"}
-        className="w-full min-h-[180px] px-3 py-2.5 rounded-md border border-(--color-border-medium) bg-(--color-bg-primary) text-[13px] text-(--color-text-primary) placeholder:text-(--color-text-tertiary) resize-none leading-relaxed focus:outline-none focus:border-(--color-accent-9) disabled:bg-(--color-bg-tertiary) transition-colors"
-      />
+      {/* #1 AI draft landing — key swap triggers fade-slide-up when draft arrives */}
+      <div
+        key={draftText ? "has-draft" : "empty"}
+        className={draftText ? "animate-fade-slide-up" : ""}
+      >
+        <textarea
+          ref={textareaRef}
+          value={draftText}
+          onChange={(e) => setDraftText(e.target.value)}
+          placeholder="Write your reply…"
+          disabled={composeState === "generating"}
+          className={`w-full min-h-[180px] px-3 py-2.5 rounded-md border bg-(--color-bg-primary) text-[13px] text-(--color-text-primary) placeholder:text-(--color-text-tertiary) resize-none leading-relaxed focus:outline-none disabled:bg-(--color-bg-tertiary) transition-colors ${
+            errorKey > 0 && !draftText.trim()
+              ? "border-(--color-text-danger)"
+              : "border-(--color-border-medium) focus:border-(--color-accent-9)"
+          }`}
+        />
+      </div>
 
-      {/* Generate button — always visible, disabled while generating */}
+      {/* Generate button */}
       <button
         onClick={onGenerate}
         disabled={composeState === "generating"}
-        className="w-full h-8 rounded-md border border-(--color-border-medium) bg-(--color-bg-primary) hover:bg-(--color-bg-tertiary) text-[13px] text-(--color-text-secondary) font-medium transition-colors flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
+        className="w-full h-8 rounded-md border border-(--color-border-medium) bg-(--color-bg-primary) hover:bg-(--color-bg-tertiary) active:scale-[0.97] text-[13px] text-(--color-text-secondary) font-medium transition-all duration-100 flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
       >
         <Sparkles size={14} strokeWidth={1.5} className="text-(--color-accent-9)" />
         Generate with AI
