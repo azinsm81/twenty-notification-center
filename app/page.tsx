@@ -6,7 +6,7 @@ import { TopBar, type SortMode } from "@/components/TopBar";
 import { DetailDrawer } from "@/components/DetailDrawer";
 import { Confetti } from "@/components/Confetti";
 import { NOTIFICATIONS } from "@/lib/data";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Clock } from "lucide-react";
 
 const COMPANY_BG: Record<string, string> = {
   S: "#FFECE8",
@@ -25,6 +25,7 @@ const DATE_GROUPS = ["Today", "Yesterday"];
 export default function Home() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [notifARead, setNotifARead] = useState(false);
+  const [notifASnoozed, setNotifASnoozed] = useState<string | null>(null);
   const [showToast, setShowToast] = useState(false);
   const [toastVisible, setToastVisible] = useState(false);
   const [sortMode, setSortMode] = useState<SortMode>("chronological");
@@ -120,19 +121,16 @@ export default function Home() {
 
                         {/* Content */}
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-start justify-between gap-4">
-                            <div className="flex items-center gap-2 flex-wrap">
-                              <span className="text-[13px] font-semibold leading-snug text-(--color-text-primary)">
-                                {n.title}
+                          <div className="flex items-start gap-2 flex-wrap">
+                            <span className="text-[13px] font-semibold leading-snug text-(--color-text-primary)">
+                              {n.title}
+                            </span>
+                            {n.urgent && !read && !notifASnoozed && (
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[13px] font-medium bg-(--color-bg-danger) text-(--color-text-danger) flex-shrink-0">
+                                <span className="w-1.5 h-1.5 rounded-full bg-(--color-red-9) inline-block" />
+                                Urgent
                               </span>
-                              {n.urgent && !read && (
-                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[13px] font-medium bg-(--color-bg-danger) text-(--color-text-danger) flex-shrink-0">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-(--color-red-9) inline-block" />
-                                  Urgent
-                                </span>
-                              )}
-                            </div>
-                            <span className="text-[12px] text-(--color-text-tertiary) flex-shrink-0 mt-0.5">{n.timestamp}</span>
+                            )}
                           </div>
 
                           <p className="text-[13px] mt-1 leading-relaxed text-(--color-text-secondary)">
@@ -140,7 +138,7 @@ export default function Home() {
                           </p>
 
                           {/* Action buttons — urgent only */}
-                          {!read && n.urgent && n.actions.length > 0 && (
+                          {!read && n.urgent && n.actions.length > 0 && !notifASnoozed && (
                             <div className="flex items-center gap-2 mt-3">
                               {n.actions.map((action) => (
                                 <button
@@ -155,6 +153,20 @@ export default function Home() {
                                 </button>
                               ))}
 
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  const snoozeTime = new Date();
+                                  snoozeTime.setHours(snoozeTime.getHours() + 1);
+                                  const label = snoozeTime.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+                                  setNotifASnoozed(label);
+                                }}
+                                className="h-7 px-3 rounded-md text-[12px] font-medium transition-colors border bg-(--color-bg-primary) border-(--color-border-medium) text-(--color-text-secondary) hover:bg-(--color-bg-tertiary) flex items-center gap-1.5"
+                              >
+                                <Clock size={12} strokeWidth={1.5} />
+                                Snooze
+                              </button>
+
                               <ArrowUpRight
                                 size={14}
                                 strokeWidth={1.5}
@@ -163,9 +175,20 @@ export default function Home() {
                             </div>
                           )}
 
-                          {read && (
-                            <span className="inline-block mt-2 text-[12px] text-(--color-text-tertiary)">{n.urgent ? `Sent · ${n.timestamp}` : n.timestamp}</span>
-                          )}
+                          {/* Timestamp — always below body */}
+                          <span className="inline-block mt-2 text-[12px] text-(--color-text-tertiary)">
+                            {read
+                              ? (n.urgent ? `Sent · ${n.timestamp}` : n.timestamp)
+                              : notifASnoozed && isA
+                                ? (
+                                  <span className="flex items-center gap-1.5">
+                                    <Clock size={11} strokeWidth={1.5} />
+                                    Snoozed until {notifASnoozed}
+                                  </span>
+                                )
+                                : n.timestamp
+                            }
+                          </span>
                         </div>
                       </div>
                     );

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { X, Sparkles, Send, AlertTriangle, RefreshCw, ArrowLeft } from "lucide-react";
+import { X, Sparkles, Send, AlertTriangle, RefreshCw, ArrowLeft, ChevronDown, ChevronUp, ExternalLink } from "lucide-react";
 import type { Notification } from "@/lib/data";
 
 type NotifA = Notification;
@@ -74,7 +74,7 @@ export function DetailDrawer({ notification, onClose, onSent }: Props) {
           boxShadow: "var(--shadow-md)",
         }}
       >
-        {/* Header — arrives with the drawer, no extra delay */}
+        {/* Header */}
         <div className="flex-shrink-0 px-5 pt-5 pb-4 border-b border-(--color-border-medium)">
           {view === "compose" && (
             <button
@@ -111,12 +111,12 @@ export function DetailDrawer({ notification, onClose, onSent }: Props) {
           </div>
         </div>
 
-        {/* Body — #4 stagger: fades in 80ms after header/drawer arrive */}
+        {/* Body — #4 stagger */}
         <div
           className={`flex-1 overflow-y-auto px-5 py-4 space-y-5 transition-opacity duration-200 ${visible ? "opacity-100" : "opacity-0"}`}
           style={{ transitionDelay: visible ? "80ms" : "0ms" }}
         >
-          {/* #3 view crossfade: key forces remount + fade-slide-up on every view switch */}
+          {/* #3 view crossfade */}
           <div key={view} className="animate-fade-slide-up space-y-5">
             {view === "summary" ? (
               <SummaryBody notification={notification} />
@@ -139,7 +139,6 @@ export function DetailDrawer({ notification, onClose, onSent }: Props) {
         {/* Footer */}
         <div className="flex-shrink-0 px-5 py-4 border-t border-(--color-border-medium)">
           {view === "summary" && (
-            /* #5 send button press feel */
             <button
               onClick={handleReply}
               className="w-full h-10 rounded-md bg-(--color-accent-9) hover:bg-(--color-accent-10) active:scale-[0.97] text-white text-[14px] font-medium transition-all duration-100"
@@ -151,18 +150,26 @@ export function DetailDrawer({ notification, onClose, onSent }: Props) {
           {view === "compose" && composeState === "generating" && (
             <div className="flex items-center justify-center gap-2 text-[13px] text-(--color-text-tertiary)">
               <RefreshCw size={14} className="animate-spin" strokeWidth={1.5} />
-              <span>Generating draft…</span>
+              <span>Writing a draft for you…</span>
             </div>
           )}
 
           {view === "compose" && composeState !== "generating" && (
-            <button
-              onClick={handleSend}
-              className="w-full h-10 rounded-md bg-(--color-accent-9) hover:bg-(--color-accent-10) active:scale-[0.97] text-white text-[14px] font-medium transition-all duration-100 flex items-center justify-center gap-2"
-            >
-              <Send size={14} strokeWidth={1.5} />
-              Send
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={handleClose}
+                className="h-10 px-4 rounded-md border border-(--color-border-medium) bg-(--color-bg-primary) hover:bg-(--color-bg-tertiary) active:scale-[0.97] text-[14px] text-(--color-text-secondary) font-medium transition-all duration-100"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSend}
+                className="flex-1 h-10 rounded-md bg-(--color-accent-9) hover:bg-(--color-accent-10) active:scale-[0.97] text-white text-[14px] font-medium transition-all duration-100 flex items-center justify-center gap-2"
+              >
+                <Send size={14} strokeWidth={1.5} />
+                Send
+              </button>
+            </div>
           )}
         </div>
       </div>
@@ -171,22 +178,68 @@ export function DetailDrawer({ notification, onClose, onSent }: Props) {
 }
 
 function SummaryBody({ notification }: { notification: NotifA }) {
+  const [summaryExpanded, setSummaryExpanded] = useState(true);
+
   return (
     <>
+      {/* Latest email snippet */}
       <div>
-        <p className="text-[11px] font-medium text-(--color-text-tertiary) uppercase tracking-wide mb-2">Latest email</p>
+        <p className="text-[11px] font-medium text-(--color-text-tertiary) tracking-wide mb-2">Latest email</p>
         <div className="p-3 rounded-md bg-(--color-bg-secondary) border border-(--color-border-light)">
           <p className="text-[13px] text-(--color-text-secondary) leading-relaxed">"{notification.snippet}"</p>
           <p className="text-[11px] text-(--color-text-tertiary) mt-2">— {notification.customer}, {notification.company}</p>
         </div>
       </div>
 
-      <div>
-        <div className="flex items-center gap-1.5 mb-2">
-          <Sparkles size={13} className="text-(--color-accent-9)" strokeWidth={1.5} />
-          <p className="text-[11px] font-medium text-(--color-text-tertiary) uppercase tracking-wide">AI Summary</p>
-        </div>
-        <p className="text-[13px] text-(--color-text-primary) leading-relaxed">{notification.aiSummary}</p>
+      {/* AI Summary — collapsible card */}
+      <div className="rounded-md border border-(--color-border-medium) overflow-hidden">
+        {/* Card header — always visible, clicking toggles body */}
+        <button
+          onClick={() => setSummaryExpanded((v) => !v)}
+          className="w-full flex items-center justify-between gap-2 px-3 py-2.5 bg-(--color-bg-secondary) hover:bg-(--color-bg-tertiary) transition-colors text-left"
+        >
+          <div className="flex items-center gap-2 min-w-0">
+            <Sparkles size={13} className="text-(--color-accent-9) flex-shrink-0" strokeWidth={1.5} />
+            <span className="text-[12px] font-medium text-(--color-text-secondary)">AI summary</span>
+            <span className="text-[11px] text-(--color-text-tertiary)">· Based on 3 emails from {notification.customer}</span>
+          </div>
+          {summaryExpanded
+            ? <ChevronUp size={13} strokeWidth={1.5} className="text-(--color-text-tertiary) flex-shrink-0" />
+            : <ChevronDown size={13} strokeWidth={1.5} className="text-(--color-text-tertiary) flex-shrink-0" />
+          }
+        </button>
+
+        {/* Collapsible body */}
+        {summaryExpanded && (
+          <div className="px-3 py-3 space-y-3 bg-(--color-bg-primary)">
+            <p className="text-[13px] text-(--color-text-primary) leading-relaxed">{notification.aiSummary}</p>
+
+            {/* Source link */}
+            <div className="flex items-center gap-3 pt-1 border-t border-(--color-border-light)">
+              <a
+                href="#"
+                onClick={(e) => e.preventDefault()}
+                className="flex items-center gap-1.5 text-[12px] text-(--color-accent-9) hover:underline"
+              >
+                <ExternalLink size={11} strokeWidth={1.5} />
+                Gmail thread · 3 emails
+              </a>
+              <a
+                href="#"
+                onClick={(e) => e.preventDefault()}
+                className="flex items-center gap-1.5 text-[12px] text-(--color-accent-9) hover:underline"
+              >
+                <ExternalLink size={11} strokeWidth={1.5} />
+                Acme Corp Renewal Q4.pdf
+              </a>
+            </div>
+
+            {/* AI disclaimer */}
+            <p className="text-[11px] text-(--color-text-tertiary) leading-relaxed">
+              AI-generated — double-check before acting.
+            </p>
+          </div>
+        )}
       </div>
     </>
   );
@@ -220,7 +273,11 @@ function ComposeBody({
       {/* Email fields */}
       <div className="space-y-1">
         <div className="flex items-center gap-2 h-8 px-3 rounded-md border border-(--color-border-medium) bg-(--color-bg-secondary)">
-          <span className="text-[11px] font-medium text-(--color-text-tertiary) w-8 flex-shrink-0">To</span>
+          <span className="text-[11px] font-medium text-(--color-text-tertiary) w-12 flex-shrink-0">From</span>
+          <span className="text-[13px] text-(--color-text-secondary)">martha@yourcompany.com</span>
+        </div>
+        <div className="flex items-center gap-2 h-8 px-3 rounded-md border border-(--color-border-medium) bg-(--color-bg-secondary)">
+          <span className="text-[11px] font-medium text-(--color-text-tertiary) w-12 flex-shrink-0">To</span>
           <span className="text-[13px] text-(--color-text-secondary)">{notification.emailFrom}</span>
         </div>
         <div className="flex items-center gap-2 h-8 px-3 rounded-md border border-(--color-border-medium) bg-(--color-bg-primary) focus-within:border-(--color-accent-9) transition-colors">
@@ -234,7 +291,7 @@ function ComposeBody({
         </div>
       </div>
 
-      {/* #1 AI draft landing — key swap triggers fade-slide-up when draft arrives */}
+      {/* #1 AI draft landing */}
       <div
         key={draftText ? "has-draft" : "empty"}
         className={draftText ? "animate-fade-slide-up" : ""}
@@ -251,23 +308,22 @@ function ComposeBody({
               : "border-(--color-border-medium) focus:border-(--color-accent-9)"
           }`}
         />
-        {/* Error appears directly under the field */}
         {errorKey > 0 && !draftText.trim() && (
           <p key={errorKey} className="animate-slide-down mt-1.5 text-[12px] text-(--color-text-danger) flex items-center gap-1.5">
             <AlertTriangle size={12} strokeWidth={1.5} className="flex-shrink-0" />
-            Your message is empty. Write a reply before sending.
+            Add a message before sending.
           </p>
         )}
       </div>
 
-      {/* Generate button */}
+      {/* Draft with AI button */}
       <button
         onClick={onGenerate}
         disabled={composeState === "generating"}
         className="w-full h-10 rounded-md border border-(--color-border-medium) bg-(--color-bg-primary) hover:bg-(--color-bg-tertiary) active:scale-[0.97] text-[14px] text-(--color-text-secondary) font-medium transition-all duration-100 flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
       >
         <Sparkles size={14} strokeWidth={1.5} className="text-(--color-accent-9)" />
-        Generate with AI
+        Draft with AI
       </button>
     </>
   );
