@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { X, Sparkles, Send, AlertTriangle, RefreshCw, ArrowLeft, ChevronDown, ChevronUp, ExternalLink } from "lucide-react";
 import type { Notification } from "@/lib/data";
+import { CompanyPanel } from "@/components/CompanyPanel";
 
 type NotifA = Notification;
 
@@ -24,6 +25,7 @@ export function DetailDrawer({ notification, onClose, onSent }: Props) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // #4 Drawer slide-in
+  const [companyPanelOpen, setCompanyPanelOpen] = useState(false);
   const [visible, setVisible] = useState(false);
   useEffect(() => {
     requestAnimationFrame(() => setVisible(true));
@@ -66,6 +68,11 @@ export function DetailDrawer({ notification, onClose, onSent }: Props) {
         onClick={handleClose}
       />
 
+      {/* Company context panel */}
+      {companyPanelOpen && (
+        <CompanyPanel onClose={() => setCompanyPanelOpen(false)} />
+      )}
+
       {/* Drawer */}
       <div
         className="fixed top-0 right-0 h-full w-[480px] bg-(--color-bg-primary) border-l border-(--color-border-medium) z-50 flex flex-col transition-transform duration-250 ease-out"
@@ -93,7 +100,12 @@ export function DetailDrawer({ notification, onClose, onSent }: Props) {
                 </div>
                 <span className="text-[13px] font-semibold text-(--color-text-primary)">{notification.customer}</span>
                 <span className="text-[13px] text-(--color-text-tertiary)">·</span>
-                <span className="text-[13px] text-(--color-text-secondary)">{notification.company}</span>
+                <button
+                  onClick={() => setCompanyPanelOpen((v) => !v)}
+                  className="text-[13px] text-(--color-text-secondary) hover:text-(--color-text-primary) hover:underline underline-offset-2 transition-colors"
+                >
+                  {notification.company}
+                </button>
               </div>
               <div className="flex items-center gap-2 mt-2 flex-wrap">
                 <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[12px] font-medium bg-(--color-accent-3) text-(--color-accent-9)">
