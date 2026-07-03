@@ -84,7 +84,6 @@ export default function Home() {
             <div className="w-28 flex-shrink-0">
               <span className="text-[11px] font-semibold text-(--color-text-tertiary) uppercase tracking-wider">Created by</span>
             </div>
-            <div className="w-[10%] flex-shrink-0" />
           </div>
           <div>
             {DATE_GROUPS_SORTED.map((group) => {
@@ -183,13 +182,10 @@ export default function Home() {
                           )}
                         </div>
 
-                        {/* Created by column — not flush right */}
+                        {/* Created by column */}
                         <div className="w-28 flex-shrink-0 pt-0.5">
                           <span className="text-[12px] text-(--color-text-tertiary)">{n.createdBy}</span>
                         </div>
-
-                        {/* Trailing spacer to pull "Created by" away from edge */}
-                        <div className="w-[10%] flex-shrink-0" />
                       </div>
                     );
                   })}
