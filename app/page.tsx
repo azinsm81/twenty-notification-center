@@ -6,21 +6,18 @@ import { TopBar, type SortMode } from "@/components/TopBar";
 import { DetailDrawer } from "@/components/DetailDrawer";
 import { Confetti } from "@/components/Confetti";
 import { NOTIFICATIONS } from "@/lib/data";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Mail, FileText, TrendingUp, Clock, Calendar, UserRound, Users, type LucideIcon } from "lucide-react";
 
-const COMPANY_BG: Record<string, string> = {
-  S: "#FFECE8",
-  J: "#DCFCE7",
-  B: "#EEF2FF",
-  R: "#FEF3C7",
-  E: "#F3E8FF",
-};
-const COMPANY_COLOR: Record<string, string> = {
-  S: "#E54D2E",
-  J: "#16A34A",
-  B: "#3E63DD",
-  R: "#D97706",
-  E: "#7C3AED",
+type NotifIcon = { icon: LucideIcon; bg: string; color: string };
+
+const NOTIF_ICONS: Record<string, NotifIcon> = {
+  A: { icon: Mail,       bg: "#FFECE8", color: "#E54D2E" },
+  B: { icon: FileText,   bg: "#EEF2FF", color: "#3E63DD" },
+  D: { icon: TrendingUp, bg: "#DCFCE7", color: "#16A34A" },
+  E: { icon: Clock,      bg: "#FEF3C7", color: "#D97706" },
+  C: { icon: Calendar,   bg: "#F3E8FF", color: "#7C3AED" },
+  F: { icon: UserRound,  bg: "#CCFBF1", color: "#0D9488" },
+  G: { icon: Users,      bg: "#EEF2FF", color: "#4338CA" },
 };
 
 // Group notifications by dateGroup
@@ -84,9 +81,10 @@ export default function Home() {
             <div className="flex-1 min-w-0">
               <span className="text-[11px] font-semibold text-(--color-text-tertiary) uppercase tracking-wider">Notification</span>
             </div>
-            <div className="w-24 flex-shrink-0 text-right">
+            <div className="w-28 flex-shrink-0">
               <span className="text-[11px] font-semibold text-(--color-text-tertiary) uppercase tracking-wider">Created by</span>
             </div>
+            <div className="w-[10%] flex-shrink-0" />
           </div>
           <div>
             {DATE_GROUPS_SORTED.map((group) => {
@@ -106,9 +104,8 @@ export default function Home() {
                   {rows.map((n) => {
                     const isA = n.id === "A";
                     const read = isRead(n.id);
-                    const initial = n.customer[0];
-                    const bg = COMPANY_BG[initial] ?? "#F1F1F1";
-                    const color = COMPANY_COLOR[initial] ?? "#999999";
+                    const notifIcon = NOTIF_ICONS[n.id];
+                    const IconComponent = notifIcon?.icon;
 
                     return (
                       <div
@@ -130,12 +127,14 @@ export default function Home() {
                           )}
                         </div>
 
-                        {/* Avatar */}
+                        {/* Icon */}
                         <div
-                          className="w-9 h-9 rounded-full flex items-center justify-center text-[13px] font-bold flex-shrink-0"
-                          style={{ backgroundColor: bg, color }}
+                          className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+                          style={{ backgroundColor: notifIcon?.bg ?? "#F1F1F1" }}
                         >
-                          {initial}
+                          {IconComponent && (
+                            <IconComponent size={16} strokeWidth={1.5} style={{ color: notifIcon?.color }} />
+                          )}
                         </div>
 
                         {/* Content */}
@@ -184,10 +183,13 @@ export default function Home() {
                           )}
                         </div>
 
-                        {/* Created by column */}
-                        <div className="w-24 flex-shrink-0 pt-0.5 text-right">
+                        {/* Created by column — not flush right */}
+                        <div className="w-28 flex-shrink-0 pt-0.5">
                           <span className="text-[12px] text-(--color-text-tertiary)">{n.createdBy}</span>
                         </div>
+
+                        {/* Trailing spacer to pull "Created by" away from edge */}
+                        <div className="w-[10%] flex-shrink-0" />
                       </div>
                     );
                   })}
