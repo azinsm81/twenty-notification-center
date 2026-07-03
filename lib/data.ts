@@ -45,7 +45,7 @@ export const NOTIFICATIONS: Notification[] = [
       "Sentiment positive; ready to sign on your confirmation",
     ],
     aiDraft:
-      "Hi Sarah,\n\nThank you for following up. I'm happy to confirm the pricing at $240,000/year as discussed.\n\nI've looped in our legal team to send over the final contract today — you should receive it within the hour. Looking forward to getting this across the line before your board meeting on Friday.\n\nBest,\nMartha",
+      "Hi Sarah,\n\nThank you for following up. I'm happy to confirm the pricing at $240,000/year as discussed.\n\nI've looped in our legal team to send over the final contract today — you should receive it within the hour. Looking forward to getting this across the line before your board meeting on Friday.\n\nBest,\nJessica",
     aiDraftWrongAttachment: "Q3 2024 Pricing Deck.pdf",
     aiDraftCorrectAttachment: "Q4 2024 Enterprise Renewal — Acme Corp.pdf",
     actions: ["Reply"],

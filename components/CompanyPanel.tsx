@@ -19,7 +19,7 @@ const EMAILS = [
     id: 1,
     from: "Sarah Chen",
     email: "sarah.chen@acmecorp.com",
-    to: "Martha R.",
+    to: "Jessica R.",
     subject: "Re: Acme Corp Renewal — Final Approval",
     preview: "Hi, just following up on the renewal proposal — can you confirm the pricing before Friday? Our board meeting is that afternoon and I need final sign-off.",
     time: "18 min ago",
@@ -27,8 +27,8 @@ const EMAILS = [
   },
   {
     id: 2,
-    from: "Martha R.",
-    email: "martha@twenty.com",
+    from: "Jessica R.",
+    email: "jessica@twenty.com",
     to: "Sarah Chen",
     subject: "Re: Acme Corp Renewal — Final Approval",
     preview: "Hi Sarah, please find attached the updated renewal proposal for FY2025. The pricing remains at $240,000/yr as discussed. Let me know if you have any questions before the board meeting.",
@@ -39,9 +39,9 @@ const EMAILS = [
     id: 3,
     from: "Sarah Chen",
     email: "sarah.chen@acmecorp.com",
-    to: "Martha R.",
+    to: "Jessica R.",
     subject: "Acme Corp Renewal — Final Approval",
-    preview: "Hi Martha, hope you're well. We're coming up on our renewal date and I'd love to get the updated proposal over to our board. Can you send over the final terms when you get a chance?",
+    preview: "Hi Jessica, hope you're well. We're coming up on our renewal date and I'd love to get the updated proposal over to our board. Can you send over the final terms when you get a chance?",
     time: "2 weeks ago",
     unread: false,
   },
@@ -124,7 +124,7 @@ export function CompanyPanel({ onClose }: Props) {
               </div>
               <div>
                 <p className="text-[13px] text-(--color-text-secondary) leading-relaxed">
-                  <span className="font-medium text-(--color-text-primary)">Acme Corp</span> renewal proposal sent by <span className="font-medium text-(--color-text-primary)">Martha</span>
+                  <span className="font-medium text-(--color-text-primary)">Acme Corp</span> renewal proposal sent by <span className="font-medium text-(--color-text-primary)">Jessica</span>
                 </p>
                 <p className="text-[11px] text-(--color-text-tertiary) mt-0.5">1 week ago</p>
               </div>
@@ -135,15 +135,15 @@ export function CompanyPanel({ onClose }: Props) {
         {activeTab === "Emails" && (
           <div className="divide-y divide-(--color-border-light)">
             {EMAILS.map((email) => {
-              const isMartha = email.from === "Martha R.";
+              const isJessica = email.from === "Jessica R.";
               return (
                 <div key={email.id} className="px-5 py-3.5 hover:bg-(--color-bg-secondary) transition-colors cursor-default">
                   <div className="flex items-start gap-2.5">
                     <div
                       className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5"
                       style={{
-                        backgroundColor: isMartha ? "#EEF2FF" : "#FFECE8",
-                        color: isMartha ? "#3E63DD" : "#E54D2E",
+                        backgroundColor: isJessica ? "#EEF2FF" : "#FFECE8",
+                        color: isJessica ? "#3E63DD" : "#E54D2E",
                       }}
                     >
                       {email.from[0]}
@@ -194,7 +194,7 @@ export function CompanyPanel({ onClose }: Props) {
                 <span className="px-2 py-0.5 rounded text-[12px] bg-(--color-bg-tertiary) text-(--color-text-primary)">acmecorp.com</span>
               </FieldRow>
               <FieldRow icon={User} label="Account Owner">
-                <span className="text-[13px] text-(--color-text-secondary)">Martha R.</span>
+                <span className="text-[13px] text-(--color-text-secondary)">Jessica R.</span>
               </FieldRow>
             </div>
           </div>
@@ -230,7 +230,7 @@ export function CompanyPanel({ onClose }: Props) {
                 <span className="text-[13px] text-(--color-text-secondary)">3 months ago</span>
               </FieldRow>
               <FieldRow icon={User} label="Created by">
-                <span className="text-[13px] text-(--color-text-secondary)">Martha R.</span>
+                <span className="text-[13px] text-(--color-text-secondary)">Jessica R.</span>
               </FieldRow>
             </div>
           </div>

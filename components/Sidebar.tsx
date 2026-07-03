@@ -83,9 +83,9 @@ export function Sidebar({ unreadCount = 1 }: { unreadCount?: number }) {
       <div className="flex-shrink-0 border-t border-(--color-border-medium) px-3 py-2">
         <button className="w-full flex items-center gap-3 px-2 py-2 rounded-md hover:bg-(--color-bg-tertiary) transition-colors">
           <div className="w-5 h-5 rounded-full bg-(--color-accent-3) flex items-center justify-center text-(--color-accent-9) text-[10px] font-semibold flex-shrink-0">
-            M
+            J
           </div>
-          <span className="text-[13px] text-(--color-text-secondary)">Martha</span>
+          <span className="text-[13px] text-(--color-text-secondary)">Jessica</span>
         </button>
       </div>
     </aside>

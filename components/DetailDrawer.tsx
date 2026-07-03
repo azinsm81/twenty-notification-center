@@ -285,7 +285,7 @@ function ComposeBody({
       <div className="space-y-2">
         <div className="flex items-center gap-2 h-9 px-3 rounded-md border border-(--color-border-medium) bg-(--color-bg-secondary)">
           <span className="text-[11px] font-medium text-(--color-text-tertiary) w-12 flex-shrink-0">From</span>
-          <span className="text-[13px] text-(--color-text-secondary)">martha@twenty.com</span>
+          <span className="text-[13px] text-(--color-text-secondary)">jessica@twenty.com</span>
         </div>
         <div className="flex items-center gap-2 h-9 px-3 rounded-md border border-(--color-border-medium) bg-(--color-bg-secondary)">
           <span className="text-[11px] font-medium text-(--color-text-tertiary) w-12 flex-shrink-0">To</span>
