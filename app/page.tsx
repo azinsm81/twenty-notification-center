@@ -128,10 +128,7 @@ export default function Home() {
                         </div>
 
                         {/* Icon */}
-                        <div
-                          className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
-                          style={{ backgroundColor: notifIcon?.bg ?? "#F1F1F1" }}
-                        >
+                        <div className="w-9 h-9 flex items-center justify-center flex-shrink-0">
                           {IconComponent && (
                             <IconComponent size={16} strokeWidth={1.5} style={{ color: notifIcon?.color }} />
                           )}
