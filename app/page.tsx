@@ -12,11 +12,15 @@ const COMPANY_BG: Record<string, string> = {
   S: "#FFECE8",
   J: "#DCFCE7",
   B: "#EEF2FF",
+  R: "#FEF3C7",
+  E: "#F3E8FF",
 };
 const COMPANY_COLOR: Record<string, string> = {
   S: "#E54D2E",
   J: "#16A34A",
   B: "#3E63DD",
+  R: "#D97706",
+  E: "#7C3AED",
 };
 
 // Group notifications by dateGroup
@@ -47,7 +51,7 @@ export default function Home() {
     }
   }, [showToast]);
 
-  const isRead = (id: string) => (id === "A" && notifARead) || id === "B" || id === "C";
+  const isRead = (id: string) => (id === "A" && notifARead);
 
   const sortedNotifications = sortMode === "importance"
     ? [...NOTIFICATIONS].sort((a, b) => (b.urgent ? 1 : 0) - (a.urgent ? 1 : 0))
@@ -132,10 +136,6 @@ export default function Home() {
                             )}
                           </div>
 
-                          <p className="text-[13px] mt-1 leading-relaxed text-(--color-text-secondary)">
-                            {n.description}
-                          </p>
-
                           {/* Action buttons — urgent only */}
                           {!read && n.urgent && n.actions.length > 0 && (
                             <div className="flex items-center gap-2 mt-3">
@@ -162,7 +162,7 @@ export default function Home() {
 
                           {/* Timestamp — always below body */}
                           <span className="inline-block mt-2 text-[12px] text-(--color-text-tertiary)">
-                            {read ? (n.urgent ? `Sent · ${n.timestamp}` : n.timestamp) : n.timestamp}
+                            {read ? (n.urgent ? `Email sent · ${n.timestamp}` : n.timestamp) : n.timestamp}
                           </span>
                         </div>
                       </div>
