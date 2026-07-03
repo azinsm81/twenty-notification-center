@@ -5,11 +5,13 @@ export type Notification = {
   title: string;
   description: string;
   timestamp: string;
+  date: string;
   dateGroup: string;
   customer: string;
   company: string;
   dealStage: string;
   dealValue: string | null;
+  createdBy: string;
   emailFrom?: string;
   emailSubject?: string;
   snippet?: string;
@@ -27,13 +29,15 @@ export const NOTIFICATIONS: Notification[] = [
     urgent: true,
     read: false,
     title: "Reply needed: Final pricing approval",
-    description: "",
+    description: "Sarah Chen is requesting final sign-off on the $240K renewal before Friday's board meeting.",
     timestamp: "18 min ago",
+    date: "Jul 3",
     dateGroup: "Today",
     customer: "Sarah Chen",
     company: "Acme Corp",
     dealStage: "Negotiation",
     dealValue: "$240,000 / yr",
+    createdBy: "System",
     emailFrom: "sarah.chen@acmecorp.com",
     emailSubject: "Re: Acme Corp Renewal — Final Approval",
     snippet:
@@ -55,13 +59,15 @@ export const NOTIFICATIONS: Notification[] = [
     urgent: false,
     read: false,
     title: "Proposal opened by James Howell",
-    description: "",
+    description: "James viewed the $85K proposal for 4 min. No link clicks yet.",
     timestamp: "1 hr ago",
+    date: "Jul 3",
     dateGroup: "Today",
     customer: "James Howell",
     company: "Globex",
     dealStage: "Proposal Sent",
     dealValue: "$85,000 / yr",
+    createdBy: "System",
     actions: [],
   },
   {
@@ -69,13 +75,15 @@ export const NOTIFICATIONS: Notification[] = [
     urgent: false,
     read: false,
     title: "Deal moved to Negotiation · Pied Piper",
-    description: "",
+    description: "Ryan Torres accepted the proposal. Deal is now in active negotiation.",
     timestamp: "3 hr ago",
+    date: "Jul 3",
     dateGroup: "Today",
     customer: "Ryan Torres",
     company: "Pied Piper",
     dealStage: "Negotiation",
     dealValue: "$120,000 / yr",
+    createdBy: "jessica_r",
     actions: [],
   },
   {
@@ -83,13 +91,15 @@ export const NOTIFICATIONS: Notification[] = [
     urgent: false,
     read: false,
     title: "Task overdue · Send contract to Hooli",
-    description: "",
+    description: "Contract was due yesterday. Emily Park is waiting on final terms.",
     timestamp: "5 hr ago",
+    date: "Jul 3",
     dateGroup: "Today",
     customer: "Emily Park",
     company: "Hooli",
     dealStage: "Contract Sent",
     dealValue: "$310,000 / yr",
+    createdBy: "jessica_r",
     actions: [],
   },
   {
@@ -97,13 +107,15 @@ export const NOTIFICATIONS: Notification[] = [
     urgent: false,
     read: false,
     title: "Meeting scheduled · Acme Corp quarterly review",
-    description: "",
-    timestamp: "Yesterday · 4:30 PM",
+    description: "QBR added to calendar for Jul 10 at 2 PM with Sarah Chen.",
+    timestamp: "4:30 PM",
+    date: "Jul 2",
     dateGroup: "Yesterday",
     customer: "Sarah Chen",
     company: "Acme Corp",
     dealStage: "Negotiation",
     dealValue: "$240,000 / yr",
+    createdBy: "System",
     actions: [],
   },
   {
@@ -111,13 +123,15 @@ export const NOTIFICATIONS: Notification[] = [
     urgent: false,
     read: false,
     title: "Contact updated · Ryan Torres promoted to VP",
-    description: "",
-    timestamp: "Yesterday · 2:15 PM",
+    description: "Title changed from Director to VP of Engineering at Pied Piper.",
+    timestamp: "2:15 PM",
+    date: "Jul 2",
     dateGroup: "Yesterday",
     customer: "Ryan Torres",
     company: "Pied Piper",
     dealStage: "Negotiation",
     dealValue: "$120,000 / yr",
+    createdBy: "System",
     actions: [],
   },
   {
@@ -125,13 +139,15 @@ export const NOTIFICATIONS: Notification[] = [
     urgent: false,
     read: false,
     title: "Your contacts have been imported",
-    description: "",
-    timestamp: "Yesterday · 5:08 PM",
+    description: "142 contacts from Initech added. Duplicates were merged automatically.",
+    timestamp: "5:08 PM",
+    date: "Jul 2",
     dateGroup: "Yesterday",
     customer: "Bill Lumbergh",
     company: "Initech",
     dealStage: "Contract Sent",
     dealValue: null,
+    createdBy: "System",
     actions: [],
   },
 ];

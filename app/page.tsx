@@ -74,6 +74,20 @@ export default function Home() {
         <TopBar sortMode={sortMode} onSortChange={setSortMode} />
 
         <main className="flex-1 overflow-y-auto bg-(--color-bg-primary)">
+          {/* Column headers */}
+          <div className="flex items-center gap-4 px-6 py-2 border-b border-(--color-border-light) bg-(--color-bg-secondary)">
+            <div className="w-12 flex-shrink-0">
+              <span className="text-[11px] font-semibold text-(--color-text-tertiary) uppercase tracking-wider">Date</span>
+            </div>
+            <div className="w-3 flex-shrink-0" />
+            <div className="w-9 flex-shrink-0" />
+            <div className="flex-1 min-w-0">
+              <span className="text-[11px] font-semibold text-(--color-text-tertiary) uppercase tracking-wider">Notification</span>
+            </div>
+            <div className="w-24 flex-shrink-0 text-right">
+              <span className="text-[11px] font-semibold text-(--color-text-tertiary) uppercase tracking-wider">Created by</span>
+            </div>
+          </div>
           <div>
             {DATE_GROUPS_SORTED.map((group) => {
               const rows = sortedNotifications.filter((n) => getGroup(n) === group);
@@ -99,24 +113,26 @@ export default function Home() {
                     return (
                       <div
                         key={n.id}
-                        className={`group flex gap-4 px-6 py-4 border-b border-(--color-border-light) transition-colors ${
+                        className={`group flex items-start gap-4 px-6 py-4 border-b border-(--color-border-light) transition-colors ${
                           isA ? "cursor-pointer hover:bg-(--color-bg-notification-hover)" : "cursor-default"
                         }`}
                         onClick={isA ? () => setDrawerOpen(true) : undefined}
                       >
-                        {/* Unread dot column */}
-                        <div className="pt-1.5 w-3 flex-shrink-0 flex items-start justify-center">
-                          {!read && (
-                            <span
-                              className="w-2 h-2 rounded-full flex-shrink-0 block"
-                              style={{ backgroundColor: n.urgent ? "#E5484D" : "#8E4EC6" }}
-                            />
+                        {/* Date column */}
+                        <div className="w-12 flex-shrink-0 pt-0.5">
+                          <span className="text-[12px] text-(--color-text-tertiary)">{n.date}</span>
+                        </div>
+
+                        {/* Urgent dot — urgent only */}
+                        <div className="pt-2 w-3 flex-shrink-0 flex items-start justify-center">
+                          {n.urgent && !read && (
+                            <span className="w-2 h-2 rounded-full flex-shrink-0 block bg-(--color-red-9)" />
                           )}
                         </div>
 
                         {/* Avatar */}
                         <div
-                          className="w-9 h-9 rounded-full flex items-center justify-center text-[13px] font-bold flex-shrink-0 mt-0.5"
+                          className="w-9 h-9 rounded-full flex items-center justify-center text-[13px] font-bold flex-shrink-0"
                           style={{ backgroundColor: bg, color }}
                         >
                           {initial}
@@ -135,6 +151,13 @@ export default function Home() {
                               </span>
                             )}
                           </div>
+
+                          {/* Body text */}
+                          {n.description && (
+                            <p className="mt-1 text-[12px] text-(--color-text-secondary) leading-relaxed">
+                              {read && n.urgent ? `Email sent · ${n.timestamp}` : n.description}
+                            </p>
+                          )}
 
                           {/* Action buttons — urgent only */}
                           {!read && n.urgent && n.actions.length > 0 && (
@@ -159,11 +182,11 @@ export default function Home() {
                               />
                             </div>
                           )}
+                        </div>
 
-                          {/* Timestamp — always below body */}
-                          <span className="inline-block mt-2 text-[12px] text-(--color-text-tertiary)">
-                            {read ? (n.urgent ? `Email sent · ${n.timestamp}` : n.timestamp) : n.timestamp}
-                          </span>
+                        {/* Created by column */}
+                        <div className="w-24 flex-shrink-0 pt-0.5 text-right">
+                          <span className="text-[12px] text-(--color-text-tertiary)">{n.createdBy}</span>
                         </div>
                       </div>
                     );
