@@ -14,6 +14,39 @@ const TAB_ICONS: Record<string, React.ElementType> = {
   Calendar: Calendar,
 };
 
+const EMAILS = [
+  {
+    id: 1,
+    from: "Sarah Chen",
+    email: "sarah.chen@acmecorp.com",
+    to: "Martha R.",
+    subject: "Re: Acme Corp Renewal — Final Approval",
+    preview: "Hi, just following up on the renewal proposal — can you confirm the pricing before Friday? Our board meeting is that afternoon and I need final sign-off.",
+    time: "18 min ago",
+    unread: true,
+  },
+  {
+    id: 2,
+    from: "Martha R.",
+    email: "martha@twenty.com",
+    to: "Sarah Chen",
+    subject: "Re: Acme Corp Renewal — Final Approval",
+    preview: "Hi Sarah, please find attached the updated renewal proposal for FY2025. The pricing remains at $240,000/yr as discussed. Let me know if you have any questions before the board meeting.",
+    time: "Last week",
+    unread: false,
+  },
+  {
+    id: 3,
+    from: "Sarah Chen",
+    email: "sarah.chen@acmecorp.com",
+    to: "Martha R.",
+    subject: "Acme Corp Renewal — Final Approval",
+    preview: "Hi Martha, hope you're well. We're coming up on our renewal date and I'd love to get the updated proposal over to our board. Can you send over the final terms when you get a chance?",
+    time: "2 weeks ago",
+    unread: false,
+  },
+];
+
 interface Props {
   onClose: () => void;
 }
@@ -99,7 +132,47 @@ export function CompanyPanel({ onClose }: Props) {
           </div>
         )}
 
-        {activeTab !== "Timeline" && (
+        {activeTab === "Emails" && (
+          <div className="divide-y divide-(--color-border-light)">
+            {EMAILS.map((email) => {
+              const isMartha = email.from === "Martha R.";
+              return (
+                <div key={email.id} className="px-5 py-3.5 hover:bg-(--color-bg-secondary) transition-colors cursor-default">
+                  <div className="flex items-start gap-2.5">
+                    <div
+                      className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5"
+                      style={{
+                        backgroundColor: isMartha ? "#EEF2FF" : "#FFECE8",
+                        color: isMartha ? "#3E63DD" : "#E54D2E",
+                      }}
+                    >
+                      {email.from[0]}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className={`text-[12px] ${email.unread ? "font-semibold text-(--color-text-primary)" : "font-medium text-(--color-text-secondary)"}`}>
+                          {email.from}
+                        </span>
+                        <span className="text-[11px] text-(--color-text-tertiary) flex-shrink-0">{email.time}</span>
+                      </div>
+                      <p className={`text-[12px] mt-0.5 ${email.unread ? "font-medium text-(--color-text-primary)" : "text-(--color-text-secondary)"}`}>
+                        {email.subject}
+                      </p>
+                      <p className="text-[12px] text-(--color-text-tertiary) mt-0.5 leading-relaxed line-clamp-2">
+                        {email.preview}
+                      </p>
+                    </div>
+                    {email.unread && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-(--color-accent-9) flex-shrink-0 mt-1.5" />
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {activeTab !== "Timeline" && activeTab !== "Emails" && (
           <div className="flex items-center justify-center h-32">
             <p className="text-[13px] text-(--color-text-tertiary)">No {activeTab.toLowerCase()} yet</p>
           </div>
